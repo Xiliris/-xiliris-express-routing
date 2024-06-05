@@ -80,4 +80,4 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 ```
 
-Without **{ mergeParams: true }**, **req.params** in the route handler would not contain the **id** parameter from the parent router's path. ```
+Without **{ mergeParams: true }**, **req.params** in the route handler would not contain the **id** parameter from the parent router's path.
