@@ -15,7 +15,7 @@ Dynamic Express Route Handler is a utility for Express.js applications that auto
 npm install @xiliris/express-route-handler
 ```
 
-Usage:
+## Usage
 
 ```js
 const express = require("express");
@@ -33,7 +33,7 @@ app.listen(3000, () => {
 });
 ```
 
-## Explenation
+## Explanation
 
 ### routeHandler(app, dir, data)
 
@@ -80,4 +80,4 @@ const express = require("express");
 const router = express.Router({ mergeParams: true });
 ```
 
-Without **{ mergeParams: true }**, **req.params** in the route handler would not contain the **id** parameter from the parent router's path. ```
+Without **{ mergeParams: true }**, **req.params** in the route handler would not contain the **id** parameter from the parent router's path.
