@@ -67,3 +67,14 @@ app.listen(3000, () => {
 - **routes** is the directory where your route files are stored. It contains **index.js**, **users.js**, **products**, and **orders**. The **products** directory contains its own **index.js**, **_archive.js**, and **(old)** directories. The **(old)** directory is ignored by the route handler because it's surrounded by parentheses. The **_archive.js** file is also ignored because it starts with an underscore.
 - **app.js** is the main file of your Express application. This is where you would use the **routeHandler** function.
 - **routes/products/[id]/index.js**, and **routes/orders/[orderId]/index.js** are dynamic routes. The **[id]** part of the folder name is a placeholder that will be replaced with the actual ID in the URL. For example, if you have a URL like **/orders/123**, it will be handled by the **routes/orders/[id]/index.js** route.
+
+## NOTE
+
+When using dynamic routes (like `[id]`), it's important to create your router with the `{ mergeParams: true }` option. This ensures that the router has access to the parameters of its parent router. Here's how you can do it:
+
+```js
+const express = require("express");
+const router = express.Router({ mergeParams: true });
+```
+
+Without **{ mergeParams: true }**, **req.params** in the route handler would not contain the **id** parameter from the parent router's path. ```
