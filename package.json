@@ -1,6 +1,6 @@
 {
   "name": "@xiliris/express-route-handler",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Dynamic Express Route Handler is a utility for Express.js applications that automatically loads routes from a specified directory.",
   "main": "index.js",
   "scripts": {
