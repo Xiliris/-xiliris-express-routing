@@ -9,17 +9,14 @@ Dynamic Express Route Handler is a utility for Express.js applications that auto
 - Provides logging functionality to track the loading process.
 - Ignores files starting with an underscore and directories surrounded by parentheses.
 
+## Contact
+https://adnanskopljak.com
+
 ## Installation
 
 ```bash
 npm install @xiliris/express-route-handler
 ```
-
-## Contact
-
-
-https://adnanskopljak.com
-
 
 ### Usage:
 
