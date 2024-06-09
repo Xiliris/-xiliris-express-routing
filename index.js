@@ -5,18 +5,13 @@ function routeHandler(app, dir, data) {
   const files = fs.readdirSync(dir);
 
   for (const file of files) {
-    if (file.startsWith("_")) {
-      continue;
-    }
+    if (file.startsWith("_")) continue;
 
     const filePath = path.join(dir, file);
-    const stat = fs.lstatSync(path.join(dir, file));
+    const stat = fs.lstatSync(filePath);
 
     if (stat.isDirectory()) {
-      if (file.startsWith("(") && file.endsWith(")")) {
-        continue;
-      }
-
+      if (file.startsWith("(") && file.endsWith(")")) continue;
       routeHandler(app, filePath, data);
     } else {
       if (!file.endsWith(".js")) {
@@ -30,28 +25,58 @@ function routeHandler(app, dir, data) {
         .replace(/\\/g, "/")
         .replace(/index$/, "")
         .replace(/\[([^\]]+)\]/g, ":$1")
-        .replace(":GET-", "")
-        .replace(":POST-", "")
-        .replace(":PUT-", "")
-        .replace(":DELETE-", "")
-        .replace(":PATCH-", "");
+        .replace(/:(GET|POST|PUT|DELETE|PATCH)-/, "");
 
       try {
         const route = require(filePath);
-        app.use(routePath, route);
-        logUser(`> Loading route ${routePath}`, data);
+        let middlewareCount = 0;
+
+        if (data.middleware) {
+          middlewareCount = applyMiddleware(app, data, routePath, route);
+        } else {
+          app.use(routePath, route);
+        }
+
+        if (middlewareCount > 0) {
+          logUser(
+            `> Loading route ${routePath} with ${middlewareCount} middleware`,
+            data
+          );
+        } else {
+          logUser(`> Loading route ${routePath}`, data);
+        }
       } catch (err) {
-        logUser(`[ Error ] loading route ${routePath}`, data);
+        logUser(`[ Error ] loading route ${routePath}: ${err.message}`, data);
       }
     }
   }
 }
 
-function logUser(logMessage, data) {
-  const { log } = data;
+function applyMiddleware(app, data, routePath, route) {
+  const { middleware: middlewareConfigs } = data;
+  let appliedMiddlewareCount = 0;
 
-  if (log) {
-    console.log(`${logMessage}`);
+  for (const config of middlewareConfigs) {
+    const { path, middlewares } = config;
+
+    if (!path || !middlewares) {
+      throw new Error(
+        "Middleware configuration must have a path and middlewares"
+      );
+    }
+
+    if (routePath === path || routePath.startsWith(path)) {
+      app.use(routePath, ...middlewares, route);
+      appliedMiddlewareCount += middlewares.length;
+    }
+  }
+
+  return appliedMiddlewareCount;
+}
+
+function logUser(logMessage, data) {
+  if (data.log) {
+    console.log(logMessage);
   }
 }
 
