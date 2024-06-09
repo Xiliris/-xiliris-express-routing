@@ -7,6 +7,7 @@ Dynamic Express Route Handler is a utility for Express.js applications that auto
 - Automatically loads all `.js` files in a specified directory and its subdirectories as routes.
 - Supports nested routes based on the directory structure.
 - Provides logging functionality to track the loading process.
+- Allows the application of middleware to specific routes for enhanced functionality and control.
 - Ignores files starting with an underscore and directories surrounded by parentheses.
 
 ## Installation
@@ -17,7 +18,7 @@ npm install @xiliris/express-route-handler
 
 ## Contact
 
-```
+```arduino
 https://adnanskopljak.com
 ```
 
@@ -41,7 +42,7 @@ app.listen(3000, () => {
 });
 ```
 
-## Explenation
+## Explanation
 
 ### routeHandler(app, dir, data)
 
