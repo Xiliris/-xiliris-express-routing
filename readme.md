@@ -7,6 +7,7 @@ Dynamic Express Route Handler is a utility for Express.js applications that auto
 - Automatically loads all `.js` files in a specified directory and its subdirectories as routes.
 - Supports nested routes based on the directory structure.
 - Provides logging functionality to track the loading process.
+- Allows the application of middleware to specific routes for enhanced functionality and control.
 - Ignores files starting with an underscore and directories surrounded by parentheses.
 
 ## Installation
@@ -17,7 +18,7 @@ npm install @xiliris/express-route-handler
 
 ## Contact
 
-```
+```arduino
 https://adnanskopljak.com
 ```
 
@@ -25,7 +26,7 @@ https://adnanskopljak.com
 
 ```js
 const express = require("express");
-const routeHandler = require("@xiliris/express-route-handler");
+const RouteHandler = require("@xiliris/express-route-handler");
 const path = require("path");
 
 const app = express();
@@ -34,16 +35,17 @@ const data = {
   log: true,
 };
 
-routeHandler(app, routesDirectory, data);
+const routeHandler = new RouteHandler(app, routesDirectory, data);
+routeHandler.handleRoutes();
 
 app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
 ```
 
-## Explenation
+## Explanation
 
-### routeHandler(app, dir, data)
+### new RouteHandler(app, dir, data)
 
 - app: An instance of an Express application.
 - dir: The path to the directory containing the route files.
@@ -102,7 +104,7 @@ const router = express.Router({ mergeParams: true });
 ```js
 const express = require("express");
 const path = require("path");
-const routeHandler = require("@xiliris/express-route-handler");
+const RouteHandler = require("@xiliris/express-route-handler");
 const isMiddleware = require("./middleware/isMiddleware");
 const addon = require("./middleware/addon");
 
@@ -119,11 +121,8 @@ const data = {
   ],
 };
 
-routeHandler(app, routesDirectory, data);
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
+const routeHandler = new RouteHandler(app, routesDirectory, data);
+routeHandler.handleRoutes();
 
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
